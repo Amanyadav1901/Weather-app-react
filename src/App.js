@@ -1,25 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import axios from "axios";
 
 function App() {
+  //const url = `https://api.openweathermap.org/data/2.5/weather?q=delhi&appid=81decfba4a0da0e67ff96f76d5d698ba`;
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="WeatherApp">
+      <div className="container">
+        <div className="top"></div>
+        <div className="bottom"></div>
+      </div>
     </div>
   );
 }
 
-export default App;
+export default WeatherApp;
