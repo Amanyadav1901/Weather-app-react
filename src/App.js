@@ -1,21 +1,24 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { button, input } from "bootstrap";
 
 function App() {
   const [data, setData] = useState({});
   const [location, setLocation] = useState("");
+  const [errors, setErrors] = useState([]);
 
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=81decfba4a0da0e67ff96f76d5d698ba`;
 
   const searchLocation = () => {
-    axios.get(url).then((response) => {
-      setData(response.data);
-      console.log(response.data);
-    });
+    axios
+      .get(url)
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch(function (error) {
+        setErrors(error.toJSON());
+      });
     setLocation("");
   };
-
   return (
     <div className="WeatherApp">
       <div className="search">
@@ -28,7 +31,11 @@ function App() {
         <button className="btn" type="button" onClick={searchLocation}>
           Search
         </button>
+        {errors.length !== 0 && errors.code === "ERR_BAD_REQUEST" && (
+          <p className="errormessage">city not found</p>
+        )}
       </div>
+
       <div className="container">
         <div className="top">
           <div className="location">
@@ -36,13 +43,12 @@ function App() {
           </div>
           <div className="temp">
             {data.main ? <h1>{data.main.temp}°C</h1> : null}
-            {/* <h1>{data.main}</h1> */}
           </div>
           <div className="description">
             {data.weather ? <p>{data.weather[0].main}</p> : null}
           </div>
         </div>
-        {data.name != undefined && (
+        {data.name !== undefined && (
           <div className="bottom">
             <div className="feels">
               {data.main ? (
@@ -57,6 +63,12 @@ function App() {
             <div className="wind">
               {data.wind ? <p className="bold">{data.wind.speed}MPH</p> : null}
               <p>Wind Speed</p>
+            </div>
+            <div className="pressure">
+              {data.main ? (
+                <p className="bold">{data.main.pressure}mbar</p>
+              ) : null}
+              <p>Pressure</p>
             </div>
           </div>
         )}
